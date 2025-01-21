@@ -61,6 +61,9 @@ public class ChiefPlayerManager : MonoBehaviour
     private WeaponType m_curWeaponType = WeaponType.Gun;
 
     private bool m_bisFlamethrowerUsable = false;
+    private bool m_bisFirstHint = true;
+
+    [SerializeField] private TMP_Text m_text_Flame;
 
 
     public void Awake()
@@ -78,6 +81,11 @@ public class ChiefPlayerManager : MonoBehaviour
     }
     public void Update()
     {
+        if(ReportManager.Instance.BIsReportActive)
+        {
+            return;
+        }
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         switch (ChiefPlayerManager.Instance.PlayerMovement.MoveDirection)
         {
@@ -135,6 +143,14 @@ public class ChiefPlayerManager : MonoBehaviour
         if (!m_bisFlamethrowerUsable)
         {
             return;
+        }
+        else if(m_bisFirstHint)
+        {
+            m_text_Flame.enabled = true;
+
+            m_bisFirstHint = false;
+
+            Invoke("HideFlameHint", 3.0f);
         }
 
         if(Input.GetKeyDown(KeyCode.Q))
@@ -338,5 +354,19 @@ public class ChiefPlayerManager : MonoBehaviour
 
         m_subWeaponSlot.m_image_FlamethrowerBackground.gameObject.SetActive(false);
         m_subWeaponSlot.m_rectTransform_RemainFlamethrowerDurability.gameObject.SetActive(false);
+    }
+
+    internal void SetPlayerActive(in bool bisActive)
+    {
+        gameObject.GetComponent<SpriteRenderer>().enabled = bisActive;
+    }
+    internal void SetPlayerPos(in Vector2 pos)
+    {
+        transform.position = pos;
+    }
+
+    private void HideFlameHint()
+    {
+        m_text_Flame.enabled = false;
     }
 }

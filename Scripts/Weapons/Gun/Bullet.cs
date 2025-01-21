@@ -39,6 +39,11 @@ public class Bullet : MonoBehaviour
         {
             collision.gameObject.GetComponent<BubbleTile>().Pop();
         }
+
+        if (collision.GetComponent<SingleEnemyManager>() != null)
+        {
+            collision.GetComponent<SingleEnemyManager>().SetDead();
+        }
     }
 
     internal void StartShoot(in StartData startData)

@@ -31,7 +31,6 @@ public class LifeManager : MonoBehaviour
     private List<SingleLifeIcon> m_singleLifeIcons = new List<SingleLifeIcon>();
 
     private LifeisZero m_lifeisZero;
-    private bool m_bisDead = false;
 
 
     public void Awake()
@@ -54,11 +53,9 @@ public class LifeManager : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if(m_curLife == 0 && !m_bisDead)
+        if(m_curLife == 0)
         {
             m_lifeisZero?.Invoke();
-
-            m_bisDead = true;
         }
 
         if(m_prevLife != m_curLife)
@@ -103,7 +100,11 @@ public class LifeManager : MonoBehaviour
         }
         set
         {
-            if (0 <= value && value <= m_maxLife)
+            if (0 >= value)
+            {
+                m_curLife = 0;
+            }
+            else
             {
                 m_curLife = value;
             }

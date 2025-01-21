@@ -14,6 +14,8 @@ public class FlamethrowerManager : MonoBehaviour
 
     [SerializeField] private GameObject m_fireHlodArm;
 
+    [SerializeField] private AudioSource m_audioSource;
+
     private IObjectPool<GameObject> m_firePool;
 
     private float m_curDurability = 50.0f;
@@ -36,6 +38,11 @@ public class FlamethrowerManager : MonoBehaviour
     }
     public void Update()
     {
+        if (ReportManager.Instance.BIsReportActive)
+        {
+            return;
+        }
+
         ChiefPlayerManager.Instance.MainWeaponSlot.m_rectTransform_RemainFlamethrowerDurability.sizeDelta = new Vector2()
         {
             x = m_mainWeaponSlotDurationWidth * (m_curDurability / m_flamethrowerConfig.FlamethrowerDurability),
@@ -70,6 +77,13 @@ public class FlamethrowerManager : MonoBehaviour
 
         if (m_bisFireable && Input.GetMouseButton(0) && m_curDurability >= 0.0f)
         {
+            if(!m_audioSource.isPlaying)
+            {
+                m_audioSource.loop = true;
+                m_audioSource.mute = false;
+                m_audioSource.Play();
+            }
+
             GameObject fireObject = Pool.Get();
             ShootFire(fireObject.GetComponent<Rigidbody2D>());
 
@@ -85,10 +99,16 @@ public class FlamethrowerManager : MonoBehaviour
             m_fireHlodArm.SetActive(true);
             ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsNowShooting", true);
         }
+        else if(m_bisFireable && Input.GetMouseButton(0) && m_curDurability <= 0.0f)
+        {
+            NotificationManager.Instance.EnqueueNotification("연료가 부족하다");
+            m_audioSource.Stop();
+        }
         else
         {
             m_fireHlodArm.SetActive(false);
             ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsNowShooting", false);
+            m_audioSource.Stop();
         }
     }
 

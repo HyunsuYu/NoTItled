@@ -21,6 +21,10 @@ public class GunManager : MonoBehaviour
 
     [SerializeField] private GameObject m_gunHlodArm;
 
+    [SerializeField] private AudioSource m_audioSource;
+
+    [SerializeField] private TMP_Text m_text_Reload;
+
     private IObjectPool<GameObject> m_bulletPool;
 
     private float m_bulletShootTimer;
@@ -42,7 +46,12 @@ public class GunManager : MonoBehaviour
     }
     public void Update()
     {
-        if(ChiefPlayerManager.Instance.CurWeaponType != ChiefPlayerManager.WeaponType.Gun)
+        if (ReportManager.Instance.BIsReportActive)
+        {
+            return;
+        }
+
+        if (ChiefPlayerManager.Instance.CurWeaponType != ChiefPlayerManager.WeaponType.Gun)
         {
             return;
         }
@@ -54,6 +63,7 @@ public class GunManager : MonoBehaviour
             if(m_reloadDelayTimer <= m_gunConfig.BulletReloadTime)
             {
                 m_gunHlodArm.SetActive(false);
+                m_text_Reload.enabled = true;
                 ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsReload", true);
                 m_bisReloading = true;
 
@@ -64,6 +74,7 @@ public class GunManager : MonoBehaviour
             }
             else
             {
+                m_text_Reload.enabled = false;
                 ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsReload", false);
                 m_bisReloading = false;
 
@@ -79,6 +90,13 @@ public class GunManager : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            if (!m_audioSource.isPlaying)
+            {
+                m_audioSource.loop = true;
+                m_audioSource.mute = false;
+                m_audioSource.Play();
+            }
+
             m_gunHlodArm.SetActive(true);
             ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsNowShooting", true);
             ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", true);
@@ -113,11 +131,13 @@ public class GunManager : MonoBehaviour
                 //ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsNowShooting", false);
             }
         }
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             m_gunHlodArm.SetActive(false);
             ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsNowShooting", false);
             ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", false);
+
+            m_audioSource.Stop();
         }
     }
 

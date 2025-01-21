@@ -37,6 +37,19 @@ public class Fire : MonoBehaviour
         }
     }
 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.GetComponent<SingleEnemyManager>() != null)
+        {
+            collision.gameObject.GetComponent<SingleEnemyManager>().SetRealDead();
+        }
+
+        if(collision.GetComponent<BossManager>() != null)
+        {
+            collision.gameObject.GetComponent<BossManager>().Health -= 1.0f;
+        }
+    }
+
     internal void StartShoot(in StartData startData)
     {
         //m_rigidbody2D = GetComponent<Rigidbody2D>();

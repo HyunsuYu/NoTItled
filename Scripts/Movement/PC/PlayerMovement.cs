@@ -16,14 +16,23 @@ public class PlayerMovement : MonoBehaviour
 
 
     [SerializeField] private Animator m_animator;
+    [SerializeField] private Animator m_rushSmokeAnimator;
 
-    private bool m_bisHorizontalMove;
+    [SerializeField] private AudioSource m_walk;
+
+    //private bool m_bisHorizontalMove;
     private MovementDirection m_movementDirection = MovementDirection.Left;
+    private bool m_bisMoved = false;
 
 
     public void Update()
     {
-        if(ChiefPlayerManager.Instance.GunManager.BIsReloading)
+        if (ReportManager.Instance.BIsReportActive)
+        {
+            return;
+        }
+
+        if (ChiefPlayerManager.Instance.GunManager.BIsReloading)
         {
             ChiefPlayerManager.Instance.Rigidbody2D.velocity = Vector2.zero;
             return;
@@ -55,6 +64,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
+            if (!m_walk.isPlaying)
+            {
+                m_walk.loop = true;
+                m_walk.mute = false;
+                m_walk.Play();
+            }
+
+            m_bisMoved = true;
+
             movementSpeed.x = -ChiefPlayerManager.Instance.MovementConfig.MovementSpeed;
 
             m_movementDirection = MovementDirection.Left;
@@ -73,9 +91,22 @@ public class PlayerMovement : MonoBehaviour
             ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", true);
             ChiefPlayerManager.Instance.FireHoldArmAnimator.SetBool("BIsWalk", true);
             //ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsRight", false);
+
+            m_rushSmokeAnimator.gameObject.SetActive(true);
+            m_rushSmokeAnimator.SetBool("BIsWalk", true);
+            m_rushSmokeAnimator.GetComponent<SpriteRenderer>().flipX = true;
         }   
         if(Input.GetKey(KeyCode.D))
         {
+            if(!m_walk.isPlaying)
+            {
+                m_walk.loop = true;
+                m_walk.mute = false;
+                m_walk.Play();
+            }
+
+            m_bisMoved = true;
+
             movementSpeed.x = ChiefPlayerManager.Instance.MovementConfig.MovementSpeed;
 
             m_movementDirection = MovementDirection.Right;
@@ -94,13 +125,24 @@ public class PlayerMovement : MonoBehaviour
             ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", true);
             ChiefPlayerManager.Instance.FireHoldArmAnimator.SetBool("BIsWalk", true);
             //ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsRight", true);
+
+            m_rushSmokeAnimator.gameObject.SetActive(true);
+            m_rushSmokeAnimator.SetBool("BIsWalk", true);
+            m_rushSmokeAnimator.GetComponent<SpriteRenderer>().flipX = false;
         }
 
         if(Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
+            m_bisMoved = false;
+
             ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsWalk", false);
             ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", false);
             ChiefPlayerManager.Instance.FireHoldArmAnimator.SetBool("BIsWalk", false);
+
+            m_rushSmokeAnimator.gameObject.SetActive(false);
+            m_rushSmokeAnimator.SetBool("BIsWalk", false);
+
+            m_walk.Stop();
         }
 
         ChiefPlayerManager.Instance.Rigidbody2D.velocity = new Vector2(movementSpeed.x, ChiefPlayerManager.Instance.Rigidbody2D.velocity.y);
@@ -111,6 +153,35 @@ public class PlayerMovement : MonoBehaviour
         get
         {
             return m_movementDirection;
+        }
+    }
+    internal bool BIsMoved
+    {
+        get
+        {
+            return m_bisMoved;
+        }
+    }
+
+    internal void SetPlayerMove(in bool bisMove)
+    {
+        if(bisMove)
+        {
+            ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsWalk", true);
+            ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", true);
+            ChiefPlayerManager.Instance.FireHoldArmAnimator.SetBool("BIsWalk", true);
+
+            m_rushSmokeAnimator.gameObject.SetActive(true);
+            m_rushSmokeAnimator.SetBool("BIsWalk", true);
+        }
+        else
+        {
+            ChiefPlayerManager.Instance.PlayerAnimator.SetBool("BIsWalk", false);
+            ChiefPlayerManager.Instance.GunHlodArmAnimator.SetBool("BIsWalk", false);
+            ChiefPlayerManager.Instance.FireHoldArmAnimator.SetBool("BIsWalk", false);
+
+            m_rushSmokeAnimator.gameObject.SetActive(false);
+            m_rushSmokeAnimator.SetBool("BIsWalk", false);
         }
     }
 

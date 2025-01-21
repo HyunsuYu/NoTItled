@@ -9,6 +9,8 @@ public class SingleEnemyManager : MonoBehaviour
     [SerializeField] private Transform m_transform_EnemyMoveRange_Left;
     [SerializeField] private Transform m_transform_EnemyMoveRange_Right;
 
+    [SerializeField] private Enemy_CollisionCheker m_enemy_CollisionCheker;
+
     private Rigidbody2D m_rigidbody2D;
     private SpriteRenderer m_spriteRenderer;
 
@@ -16,13 +18,21 @@ public class SingleEnemyManager : MonoBehaviour
 
     private float speed = 3.0f;
 
+    private Animator m_animator;
+    private BoxCollider2D m_boxCollider2D;
+
+    private bool m_bisDead = false;
+
 
     public void Awake()
     {
         m_rigidbody2D = GetComponent<Rigidbody2D>();
         m_spriteRenderer = GetComponent<SpriteRenderer>();
 
-        switch(m_movementDirection)
+        m_animator = GetComponent<Animator>();
+        m_boxCollider2D = GetComponent<BoxCollider2D>();
+
+        switch (m_movementDirection)
         {
             case PlayerMovement.MovementDirection.Left:
                 m_spriteRenderer.flipX = true;
@@ -36,7 +46,12 @@ public class SingleEnemyManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        switch(m_movementDirection)
+        if(m_bisDead)
+        {
+            return;
+        }
+
+        switch (m_movementDirection)
         {
             case PlayerMovement.MovementDirection.Left:
                 {
@@ -62,5 +77,45 @@ public class SingleEnemyManager : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    internal void SetDead()
+    {
+        m_animator.Play("Enemy_Dead");
+        //m_boxCollider2D.enabled = false;
+        m_enemy_CollisionCheker.BIsDead = true;
+
+        m_rigidbody2D.velocity = Vector2.zero;
+
+        Invoke("SetAlive", 2.0f);
+
+        m_bisDead = true;
+    }
+    internal void SetRealDead()
+    {
+        m_animator.Play("Enemy_Dead");
+
+        Invoke("DestroyThis", 1.0f);
+    }
+
+    private void SetAlive()
+    {
+        m_boxCollider2D.enabled = true;
+        m_animator.Play("Enemy_Alive");
+
+        m_enemy_CollisionCheker.BIsDead = false;
+
+        //m_bisDead = false;
+        Invoke("SetIsNotDead", 2.0f);
+    }
+
+    private void DestroyThis()
+    {
+        Destroy(gameObject);
+    }
+
+    private void SetIsNotDead()
+    {
+        m_bisDead = false;
     }
 }

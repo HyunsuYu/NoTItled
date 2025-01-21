@@ -7,9 +7,12 @@ using UnityEngine.UI;
 
 public class Item_FuelBox : MonoBehaviour
 {
-    public void OnTriggerEnter2D(Collider2D collision)
+    private bool m_bisItemInteractable = false;
+
+
+    public void Update()
     {
-        if (collision.CompareTag("Player"))
+        if(m_bisItemInteractable && Input.GetMouseButtonDown(1))
         {
             ChiefPlayerManager.Instance.BIsFlamethrowerUsable = true;
 
@@ -20,6 +23,22 @@ public class Item_FuelBox : MonoBehaviour
             ChiefPlayerManager.Instance.FlamethrowerManager.CurDurability = ChiefPlayerManager.Instance.FlamethrowerManager.FlamethrowerConfig.FlamethrowerDurability;
 
             Destroy(gameObject);
+        }
+    }
+
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            m_bisItemInteractable = true;
+        }
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            m_bisItemInteractable = false;
         }
     }
 }
