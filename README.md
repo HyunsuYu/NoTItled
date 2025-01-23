@@ -16,19 +16,26 @@ This game includes horror, so if you don't like scary things, We recommend not p
 
 Thank you to all the people involved in the game jam.
 
+# Team Members
+- <a href="https://globalgamejam.org/users/hyunsuyu">HyunsuYu</a>
+- <a href="https://globalgamejam.org/users/jeonghuisu">정희수</a>
+- <a href="https://globalgamejam.org/users/ubin">UBIN</a>
+- <a href="https://globalgamejam.org/users/park0625">park0625</a>
+- <a href="https://globalgamejam.org/users/agju">악주</a>
+- <a href="https://globalgamejam.org/users/neiryu">Neiryu</a>
+
 # Download Link
 If you want to download the game, click the <a href="https://ggjv4.s3.us-west-1.amazonaws.com/files/games/2025/825191/exec/UDE-891.zip?VersionId=qlknyUy5qQ3_9Kb.S0B102awJgCwflap">link</a> to download the zip file and then unzip it.
 
 # Details
-> [!Languages]\
-> Korean
+> [!TIP]\
+> Languages : Korean
 
-> [!Platforms]\
-> MS Windows
+> [!IMPORTANT]\
+> Platforms : MS Windowsm x86
 
-> [!Tools and Technologies]\
-> .Net
-> Unity
+> [!NOTE]\
+> Tools and Technologies : Unity, .Net
 
 # Medias
 <p align="center">
