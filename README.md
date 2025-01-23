@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/07db841a-7dd2-4532-b017-01085ccb0059" alt="Simple Icons" width=70>
+  <img src="https://github.com/user-attachments/assets/b76d4475-df69-47a0-9fac-2effe06e793e" alt="Simple Icons" width=500>
   <h3 align="center">UDE-B91</h3>
   <p align="center">
     GGJ2025 Busan release game work. See <a href="https://globalgamejam.org/games/2025/ude-891-9#jam-menu-jamsite" target="_blank">game info page</a> for details
@@ -39,11 +39,11 @@ If you want to download the game, click the <a href="https://ggjv4.s3.us-west-1.
 
 # Medias
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f1f87085-d239-4e69-bcce-289101f93338" width=600>
+  <img src="https://github.com/user-attachments/assets/8388de64-74bd-4324-86a6-be9fa49848b4" width=600>
   <br>
-  <img src="https://github.com/user-attachments/assets/1ae90182-fcaa-4233-a56c-e7f0131d5a23" width=600>
+  <img src="https://github.com/user-attachments/assets/f5512170-c643-43f8-bb87-811eb7c4c294" width=600>
   <br>
-  <img src="https://github.com/user-attachments/assets/08efdd2a-416b-4e59-bdf5-c1dff53cb93f" width=600>
+  <img src="https://github.com/user-attachments/assets/fec5179c-362d-4f8d-9994-bbc1955600f9" width=600>
   <br>
-  <img src="https://github.com/user-attachments/assets/251a83ff-ccd7-4f3c-b69c-3076d9ddccfe" width=600>
+  <img src="https://github.com/user-attachments/assets/869de5a4-d03f-45ca-baaa-fe4b09cb4c1e" width=600>
 </p>
